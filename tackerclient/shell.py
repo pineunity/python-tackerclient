@@ -169,6 +169,7 @@ COMMAND_V1 = {
     'ns-list': ns.ListNS,
     'ns-delete': ns.DeleteNS,
     'ns-show': ns.ShowNS,
+    'ns-update': ns.UpdateNS,
 
     'cluster-create': vnfcluster.CreateCluster,
     'cluster-delete': vnfcluster.DeleteCluster,

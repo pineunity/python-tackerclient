@@ -669,6 +669,10 @@ class Client(ClientBase):
         return self.delete(self.ns_path % ns)
 
     @APIParamsCall
+    def update_vnffg(self, ns, body):
+        return self.put(self.ns_path % ns, body=body)
+
+    @APIParamsCall
     def create_cluster(self, body=None):
         return self.post(self.clusters_path, body)
 
