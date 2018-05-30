@@ -125,7 +125,7 @@ class DeleteNS(tackerV10.DeleteCommand):
 
 
 class UpdateNS(tackerV10.UpdateCommand):
-    """Update a given VNFFG."""
+    """Update a given NS."""
 
     resource = _NS
 
