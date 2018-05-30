@@ -122,3 +122,47 @@ class DeleteNS(tackerV10.DeleteCommand):
 
     resource = _NS
     deleted_msg = {'ns': 'delete initiated'}
+
+class UpdateNS(tackerV10.UpdateCommand):
+    """Update a given VNFFG."""
+
+    resource = _NS
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--nsd-template',
+            help=_('NSD file to update NS')
+        )
+
+    def args2body(self, parsed_args):
+        args = {}
+        body = {self.resource: args}
+
+        tacker_client = self.get_client()
+        tacker_client.format = parsed_args.request_format
+
+        if parsed_args.vnf_mapping:
+            _vnf_mapping = dict()
+            _vnf_mappings = parsed_args.vnf_mapping.split(",")
+            for mapping in _vnf_mappings:
+                vnfd_name, vnf = mapping.split(":", 1)
+                _vnf_mapping[vnfd_name] = \
+                    tackerV10.find_resourceid_by_name_or_id(
+                        tacker_client, 'vnf', vnf)
+
+            parsed_args.vnf_mapping = _vnf_mapping
+
+        if parsed_args.vnffgd_template:
+            with open(parsed_args.vnffgd_template) as f:
+                template = f.read()
+            try:
+                args['vnffgd_template'] = yaml.load(
+                    template, Loader=yaml.SafeLoader)
+            except yaml.YAMLError as e:
+                raise exceptions.InvalidInput(e)
+            if not args['vnffgd_template']:
+                raise exceptions.InvalidInput('The vnffgd template is empty')
+
+        tackerV10.update_dict(parsed_args, body[self.resource],
+                              ['tenant_id', 'vnf_mapping', 'symmetrical'])
+        return body
