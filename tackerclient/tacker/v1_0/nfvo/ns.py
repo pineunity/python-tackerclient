@@ -141,12 +141,6 @@ class UpdateNS(tackerV10.UpdateCommand):
 
         tacker_client = self.get_client()
         tacker_client.format = parsed_args.request_format
-        if parsed_args.vim_name:
-                _id = tackerV10.find_resourceid_by_name_or_id(tacker_client,
-                                                              'vim',
-                                                              parsed_args.
-                                                              vim_name)
-                parsed_args.vim_id = _id
         if parsed_args.nsd_template:
             with open(parsed_args.nsd_template) as f:
                 template = f.read()
@@ -159,6 +153,5 @@ class UpdateNS(tackerV10.UpdateCommand):
                 raise exceptions.InvalidInput('The nsd template is empty')
 
         tackerV10.update_dict(parsed_args, body[self.resource],
-                              ['tenant_id', 'name', 'description',
-                               'vim_id'])
+                              ['tenant_id'])
         return body
