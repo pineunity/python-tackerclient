@@ -154,5 +154,6 @@ class UpdateNS(tackerV10.UpdateCommand):
                 raise exceptions.InvalidInput('The nsd template is empty')
 
         tackerV10.update_dict(parsed_args, body[self.resource],
-                              ['tenant_id'])
+                              ['tenant_id', 'name', 'description',
+                               'nsd_id', 'vim_id'])
         return body
