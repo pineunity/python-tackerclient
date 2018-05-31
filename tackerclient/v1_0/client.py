@@ -669,7 +669,7 @@ class Client(ClientBase):
         return self.delete(self.ns_path % ns)
 
     @APIParamsCall
-    def update_vnffg(self, ns, body):
+    def update_ns(self, ns, body):
         return self.put(self.ns_path % ns, body=body)
 
     @APIParamsCall
